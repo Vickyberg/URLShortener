@@ -9,4 +9,6 @@ public interface URLService {
     GetShortURlResponse getShortURL(GetShortURLRequest getShortURLRequest);
 
     GetLongURLResponse getLongURL(String shortURL);
+
+    Long numOfURLs();
 }
