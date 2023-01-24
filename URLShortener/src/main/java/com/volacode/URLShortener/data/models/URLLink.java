@@ -6,12 +6,14 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
+
 @Data
 @NoArgsConstructor
 @Document("URL Links")
 public class URLLink {
 
     @Id
-    Long id;
+    String id;
     String link;
 }

@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class GetShortURlResponse {
+public class GetShortURLResponse {
 
     String shortURL;
 }
