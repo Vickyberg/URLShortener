@@ -5,6 +5,8 @@ import com.volacode.URLShortener.data.repositories.URLRepository;
 import com.volacode.URLShortener.dtos.reponses.GetLongURLResponse;
 import com.volacode.URLShortener.dtos.reponses.GetShortURLResponse;
 import com.volacode.URLShortener.dtos.requests.GetShortURLRequest;
+import com.volacode.URLShortener.utils.IDConverter;
+import io.github.cdimascio.dotenv.Dotenv;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,23 +20,35 @@ public class URLServiceImpl implements URLService{
     private  final URLRepository urlRepository;
     @Override
     public GetShortURLResponse getShortURL(GetShortURLRequest getURLRequest) {
+
         URLLink urlLink = new URLLink();
         urlLink.setLink(getURLRequest.getLongURL());
         urlLink.setId(getId());
         urlRepository.save(urlLink);
 
+        Dotenv dotenv = Dotenv.load();
+
         GetShortURLResponse response = new GetShortURLResponse();
-        response.setShortURL();
-        return null;
+        response.setShortURL(dotenv.get("LOCAL") + "/" + urlLink.getId());
+        return response;
     }
 
     private String getId() {
-        return null;
+        return IDConverter.convertRequestID(urlRepository.count());
     }
 
     @Override
     public GetLongURLResponse getLongURL(String shortURL) {
-        return null;
+        String id =getRequestId(shortURL);
+        GetLongURLResponse response = new GetLongURLResponse();
+        response.setLongURL(urlRepository.findURLLinkById(id).getLink());
+
+        return response;
+    }
+
+    private String getRequestId(String shortURL) {
+        String[] compArray = shortURL.split("/");
+        return  compArray[compArray.length -1];
     }
 
     @Override
