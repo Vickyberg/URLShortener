@@ -26,7 +26,7 @@ public class URLServiceImpl implements URLService{
         urlLink.setId(getId());
         urlRepository.save(urlLink);
 
-        Dotenv dotenv = Dotenv.load();
+        Dotenv dotenv = Dotenv.configure().directory("C:\\Users\\Olamide\\Desktop\\URLShortener\\URLShortener\\src\\main\\java\\com\\volacode\\URLShortener\\assets\\.env").filename(".env").load();
 
         GetShortURLResponse response = new GetShortURLResponse();
         response.setShortURL(dotenv.get("LOCAL") + "/" + urlLink.getId());
