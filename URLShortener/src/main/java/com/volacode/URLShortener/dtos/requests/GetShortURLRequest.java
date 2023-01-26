@@ -15,6 +15,6 @@ public class GetShortURLRequest {
     @NotNull(message = "URL cannot be null")
     @URL(message = "URL is invalid")
     @NotEmpty(message = "URL cannot be empty")
-    String LongURL;
+    String longURL;
 
 }

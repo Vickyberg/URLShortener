@@ -4,6 +4,7 @@ import com.volacode.URLShortener.data.models.URLLink;
 import com.volacode.URLShortener.data.repositories.URLRepository;
 import com.volacode.URLShortener.dtos.reponses.GetLongURLResponse;
 import com.volacode.URLShortener.dtos.reponses.GetShortURLResponse;
+import com.volacode.URLShortener.dtos.requests.GetLongURLRequest;
 import com.volacode.URLShortener.dtos.requests.GetShortURLRequest;
 import com.volacode.URLShortener.exceptions.InvalidURLException;
 import com.volacode.URLShortener.utils.IDConverter;
@@ -18,8 +19,8 @@ public class URLServiceImpl implements URLService{
 
     private  final URLRepository urlRepository;
     @Override
-    public GetShortURLResponse getShortURL(GetShortURLRequest getURLRequest) {
-        isValidURL(getURLRequest.getLongURL());
+    public GetShortURLResponse getShortURL(GetShortURLRequest getURLRequest) throws InvalidURLException{
+//        isValidURL(getURLRequest.getLongURL());
 
         URLLink urlLink = new URLLink();
         urlLink.setLink(getURLRequest.getLongURL());
@@ -32,7 +33,6 @@ public class URLServiceImpl implements URLService{
         response.setShortURL(dotenv.get("LOCAL") + "/" + urlLink.getId());
         return response;
     }
-
     @Override
     public GetLongURLResponse getLongURL(String shortURL) {
         String id = getRequestID(shortURL);
@@ -40,12 +40,17 @@ public class URLServiceImpl implements URLService{
         GetLongURLResponse response = new GetLongURLResponse();
         response.setLongURL(urlRepository.findURLLinkById(id).getLink());
         return response;
+
     }
+
+
 
     private String getRequestID(String shortURL) {
         String[] compArray = shortURL.split("/");
         return compArray[compArray.length - 1];
     }
+
+
 
     @Override
     public Long numOfURLs() {
@@ -63,7 +68,6 @@ public class URLServiceImpl implements URLService{
                 "\\.[a-zA-Z\\d9()]{1,6}\\b(?:[-a-zA-Z\\d@:%._\\+.~#?&\\/=]*)$")) {
             throw new InvalidURLException("Invalid link supplied. Please try again!!.");
         }
-
 
     }
 
